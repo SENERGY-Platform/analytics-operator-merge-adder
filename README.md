@@ -1,6 +1,10 @@
-# operator-adder
+# operator-merge-adder
 
 Takes two values and adds them together. Sets the timestamp to the latest of both values.
+
+Use this operator when adding values of different device types. Use [operator-adder](https://github.com/SENERGY-Platform/analytics-operator-adder) when adding values of the same device types.
+
+Use the flow designer to first add all values of the same device types and this operator to add those added values.
 
 ## Inputs
 
