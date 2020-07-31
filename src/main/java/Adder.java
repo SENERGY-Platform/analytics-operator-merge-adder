@@ -39,6 +39,7 @@ public class Adder implements OperatorInterface {
         String timestamp2 = message.getInput("timestamp2").getString();
 
         if(debug){
+            System.out.println("Complete message: " + message.getMessageString());
             System.out.println("Got values:\n\tvalue1: " + value1 + "\n\ttimestamp1: " + timestamp1
                     + "\n\tvalue2: " + value2 + "\n\ttimestamp2: " + timestamp2);
         }
