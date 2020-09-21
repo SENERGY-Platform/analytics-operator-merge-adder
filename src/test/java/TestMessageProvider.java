@@ -1,7 +1,7 @@
 
-import org.infai.ses.senergy.operators.Builder;
 import org.infai.ses.senergy.operators.Config;
 import org.infai.ses.senergy.operators.Message;
+import org.infai.ses.senergy.operators.StreamBuilder;
 import org.infai.ses.senergy.utils.ConfigProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,7 +16,7 @@ public class TestMessageProvider {
 
     public static List<Message> getTestMesssagesSet() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("src/test/resources/sample-data-small.json"));
-        Builder builder = new Builder("1", "1");
+        StreamBuilder builder = new StreamBuilder("1", "1");
         Config config = new Config(getConfig());
         ConfigProvider.setConfig(config);
         List<Message> messageSet = new ArrayList<>();
