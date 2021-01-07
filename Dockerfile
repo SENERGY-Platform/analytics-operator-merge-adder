@@ -6,6 +6,7 @@ RUN mvn clean install
 
 FROM openjdk:11-jre-slim
 ENV NAME merge-adder
+LABEL org.opencontainers.image.source https://github.com/SENERGY-Platform/analytics-operator-merge-adder
 COPY --from=builder /usr/src/app/target/operator-${NAME}-jar-with-dependencies.jar /opt/operator.jar
 ADD https://github.com/jmxtrans/jmxtrans-agent/releases/download/jmxtrans-agent-1.2.6/jmxtrans-agent-1.2.6.jar opt/jmxtrans-agent.jar
 CMD ["java","-jar","/opt/operator.jar"]
