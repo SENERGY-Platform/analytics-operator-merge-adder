@@ -17,14 +17,14 @@
 
 
 import org.infai.ses.senergy.exceptions.NoValueException;
+import org.infai.ses.senergy.operators.BaseOperator;
 import org.infai.ses.senergy.operators.Helper;
 import org.infai.ses.senergy.operators.Message;
-import org.infai.ses.senergy.operators.OperatorInterface;
 
 import java.time.format.DateTimeParseException;
 
 
-public class Adder implements OperatorInterface {
+public class Adder extends BaseOperator {
 
     private boolean debug;
 
