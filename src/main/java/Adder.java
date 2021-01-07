@@ -16,6 +16,7 @@
 
 
 
+import org.infai.ses.senergy.exceptions.NoValueException;
 import org.infai.ses.senergy.operators.Helper;
 import org.infai.ses.senergy.operators.Message;
 import org.infai.ses.senergy.operators.OperatorInterface;
@@ -40,7 +41,6 @@ public class Adder implements OperatorInterface {
             String timestamp2 = message.getInput("timestamp2").getString();
 
             if(debug){
-                System.out.println("Complete message: " + message.getMessageString());
                 System.out.println("Got values:\n\tvalue1: " + value1 + "\n\ttimestamp1: " + timestamp1
                         + "\n\tvalue2: " + value2 + "\n\ttimestamp2: " + timestamp2);
             }
@@ -61,15 +61,18 @@ public class Adder implements OperatorInterface {
             message.output("timestamp", long1 > long2 ? timestamp1 : timestamp2); //Outputs latest timestamp
             message.output("value", value1 + value2);
         } catch (NullPointerException e){
-            System.out.println(e.getMessage() + " " + message.getMessageString());
+            System.out.println(e.getMessage());
+        } catch (NoValueException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void configMessage(Message message) {
+    public Message configMessage(Message message) {
         message.addInput("value1");
         message.addInput("value2");
         message.addInput("timestamp1");
         message.addInput("timestamp2");
+        return message;
     }
 }

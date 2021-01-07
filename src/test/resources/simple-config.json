@@ -1,0 +1,35 @@
+{
+  "inputTopics": [
+    {
+      "name": "analytics-merge-adder",
+      "filterType": "DeviceId",
+      "filterValue": "1",
+      "mappings": [
+        {
+          "dest": "value2",
+          "source": "value.reading.value2"
+        },
+        {
+          "dest": "timestamp2",
+          "source": "value.reading.timestamp2"
+        },
+        {
+          "dest": "timestamp1",
+          "source": "value.reading.timestamp1"
+        },
+        {
+          "dest": "value1",
+          "source": "value.reading.value1"
+        },
+        {
+          "dest": "timestamp",
+          "source": "value.reading.timestamp"
+        },
+        {
+          "dest": "value",
+          "source": "value.reading.value"
+        }
+      ]
+    }
+  ]
+}

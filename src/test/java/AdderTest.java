@@ -1,48 +1,37 @@
-import com.jayway.jsonpath.JsonPath;
+import org.infai.ses.senergy.models.DeviceMessageModel;
+import org.infai.ses.senergy.models.MessageModel;
+import org.infai.ses.senergy.operators.Config;
+import org.infai.ses.senergy.operators.Helper;
 import org.infai.ses.senergy.operators.Message;
+import org.infai.ses.senergy.operators.OperatorInterface;
+import org.infai.ses.senergy.testing.utils.JSONHelper;
+import org.infai.ses.senergy.utils.ConfigProvider;
+import org.json.simple.JSONArray;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.List;
 
 
 public class AdderTest {
     @Test
     public void test() throws Exception {
-        Adder adder = new Adder();
-        List<Message> messages = TestMessageProvider.getTestMesssagesSet();
-        for (Message m : messages) {
-            adder.configMessage(m);
-            adder.run(m);
-
-            m.addInput("value");
-            m.addInput("timestamp");
-
-            double valueActual = m.getInput("value").getValue();
-            double valueExpected = Double.parseDouble(m.getMessageString().split("value\":")[1].split("}")[0]);
-            String timestampExpected = m.getInput("timestamp").getString();
-            String timestampActual = m.getMessageString().split("timestamp\":\"")[1].split("\"")[0];
-            Assert.assertEquals(valueExpected, valueActual, 0.01);
-            Assert.assertEquals(timestampExpected, timestampActual);
-        }
-    }
-
-    @Test
-    public void testComplex() throws Exception {
-        Adder adder = new Adder();
-        List<Message> messages = TestMessageProviderComplex.getTestMesssagesSet();
-        for (Message m : messages) {
-            adder.configMessage(m);
-            adder.run(m);
-
-            m.addInput("value");
-            m.addInput("timestamp");
-
-            double valueActual = JsonPath.read(m.getMessageString(), "$.analytics.value");
-
-            String timestampActual = JsonPath.read(m.getMessageString(), "$.analytics.timestamp");
-            Assert.assertEquals(2.78, valueActual, 0.01);
-            Assert.assertEquals("2020-07-31T07:38:13.000Z", timestampActual);
+        Config config = new Config(new JSONHelper().parseFile("simple-config.json").toString());
+        JSONArray messages = new JSONHelper().parseFile("simple.json");
+        String topicName = config.getInputTopicsConfigs().get(0).getName();
+        ConfigProvider.setConfig(config);
+        Message message = new Message();
+        MessageModel model = new MessageModel();
+        OperatorInterface testOperator = new Adder();
+        message.addInput("value");
+        message.addInput("timestamp");
+        testOperator.configMessage(message);
+        for (Object msg : messages) {
+            DeviceMessageModel deviceMessageModel = JSONHelper.getObjectFromJSONString(msg.toString(), DeviceMessageModel.class);
+            assert deviceMessageModel != null;
+            model.putMessage(topicName, Helper.deviceToInputMessageModel(deviceMessageModel, topicName));
+            message.setMessage(model);
+            testOperator.run(message);
+            Assert.assertEquals(message.getInput("value").getValue(), message.getMessage().getOutputMessage().getAnalytics().get("value"));
+            Assert.assertEquals(message.getInput("timestamp").getString(), message.getMessage().getOutputMessage().getAnalytics().get("timestamp"));
         }
     }
 }
