@@ -35,10 +35,10 @@ public class Adder extends BaseOperator {
     @Override
     public void run(Message message) {
         try {
-            double value1 = message.getInput("value1").getValue();
-            double value2 = message.getInput("value2").getValue();
-            String timestamp1 = message.getInput("timestamp1").getString();
-            String timestamp2 = message.getInput("timestamp2").getString();
+            double value1 = message.getFlexInput("value1").getValue();
+            double value2 = message.getFlexInput("value2").getValue();
+            String timestamp1 = message.getFlexInput("timestamp1").getString();
+            String timestamp2 = message.getFlexInput("timestamp2").getString();
 
             if(debug){
                 System.out.println("Got values:\n\tvalue1: " + value1 + "\n\ttimestamp1: " + timestamp1
@@ -69,10 +69,10 @@ public class Adder extends BaseOperator {
 
     @Override
     public Message configMessage(Message message) {
-        message.addInput("value1");
-        message.addInput("value2");
-        message.addInput("timestamp1");
-        message.addInput("timestamp2");
+        message.addFlexInput("value1");
+        message.addFlexInput("value2");
+        message.addFlexInput("timestamp1");
+        message.addFlexInput("timestamp2");
         return message;
     }
 }
